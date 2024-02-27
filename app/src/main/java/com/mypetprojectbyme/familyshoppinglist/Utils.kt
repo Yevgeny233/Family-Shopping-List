@@ -10,7 +10,7 @@ import com.mypetprojectbyme.familyshoppinglist.Constants.TAG_SERVICE
 class Utils {
 
     companion object {
-        fun printLog(massage: String) {
+        fun printAuthLog(massage: String) {
             Log.i(Constants.TAG_MASSAGE_AUTH, massage)
         }
 

@@ -24,7 +24,7 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Utils.printLog("done onCreate by WelcomeActivity")
+        Utils.printAuthLog("done onCreate by WelcomeActivity")
 
         lifecycleScope.launch(Dispatchers.Main) {
             currentUserViewModel.observeCurrentUser().collect { userOfAppModel ->
@@ -56,7 +56,7 @@ class WelcomeActivity : AppCompatActivity() {
         shimmer = null
         authenticationIntent = null
         startIntent = null
-        Utils.printLog("done onDestroy by WelcomeActivity")
+        Utils.printAuthLog("done onDestroy by WelcomeActivity")
 
     }
 }

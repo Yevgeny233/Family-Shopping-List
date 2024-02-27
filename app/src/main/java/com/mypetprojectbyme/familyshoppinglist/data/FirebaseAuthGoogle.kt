@@ -41,9 +41,9 @@ class FirebaseAuthGoogle @Inject constructor(
         googleApiClient = GoogleApiClient.Builder(context)
             .enableAutoManage(fragmentActivity) { connectionResult ->
                 if (connectionResult.isSuccess) {
-                    Utils.printLog("Connection isSuccess = ${connectionResult.isSuccess}")
+                    Utils.printAuthLog("Connection isSuccess = ${connectionResult.isSuccess}")
                 } else {
-                    Utils.printLog("Connection failed: ${connectionResult.errorMessage}")
+                    Utils.printAuthLog("Connection failed: ${connectionResult.errorMessage}")
                 }
 
             }.addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
@@ -62,14 +62,14 @@ class FirebaseAuthGoogle @Inject constructor(
         auth?.signInWithCredential(credential)?.addOnCompleteListener(activity) { task ->
             if (task.isSuccessful) {
                 // Sign in success
-                Utils.printLog("signInWithCredential:success")
+                Utils.printAuthLog("signInWithCredential:success")
                 currentUser = auth?.currentUser
                 Utils.makeToast(context, "Authentication successful.")
                 isActivatedUser.tryEmit(true)
 
             } else {
                 // If sign in fails, display a message to the user.
-                Utils.printLog("signInWithCredential:failure ${task.exception}")
+                Utils.printAuthLog("signInWithCredential:failure ${task.exception}")
                 Utils.makeToast(context, "Authentication failed.")
             }
         }

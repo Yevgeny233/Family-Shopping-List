@@ -68,7 +68,7 @@ class AuthActivity : AppCompatActivity() {
 
         authBinding?.signinGoogleImageBt?.setOnClickListener {
             firebaseAuthGoogle.signInGoogle(this)
-            Utils.printLog("signinGoogleImageBt is clicked")
+            Utils.printAuthLog("signinGoogleImageBt is clicked")
             observeUserStateAuthGoogle()
         }
 
@@ -83,28 +83,28 @@ class AuthActivity : AppCompatActivity() {
                 when (it) {
                     InternetConnectionStatus.AVAILABLE -> {
                         withContext(Dispatchers.Main) {
-                            Utils.printLog("Network is online")
+                            Utils.printAuthLog("Network is online")
                             unlockViews()
                         }
                     }
 
                     InternetConnectionStatus.UNAVAILABLE -> {
                         withContext(Dispatchers.Main) {
-                            Utils.printLog("Network is offline")
+                            Utils.printAuthLog("Network is offline")
                             lockViews()
                         }
                     }
 
                     InternetConnectionStatus.LOST -> {
                         withContext(Dispatchers.Main) {
-                            Utils.printLog("Network is lost")
+                            Utils.printAuthLog("Network is lost")
                             lockViews()
                         }
                     }
 
                     InternetConnectionStatus.LOSING -> {
                         withContext(Dispatchers.Main) {
-                            Utils.printLog("Network is losing")
+                            Utils.printAuthLog("Network is losing")
                             lockViews()
                         }
                     }
@@ -123,7 +123,7 @@ class AuthActivity : AppCompatActivity() {
                     val account = result.signInAccount
                     firebaseAuthGoogle.firebaseAuthWithGoogle(this, account)
                 } else {
-                    Utils.printLog("Google Sign In failed. by ${result.status.statusMessage}")
+                    Utils.printAuthLog("Google Sign In failed. by ${result.status.statusMessage}")
                     Utils.makeToast(this, "Google Sign In failed.")
                 }
             }
