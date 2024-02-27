@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "691428675120",
+    "project_id": "familyshoppinglist-e0bd1",
+    "storage_bucket": "familyshoppinglist-e0bd1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691428675120:android:f4d9410ef5ca3545a0e7f5",
+        "android_client_info": {
+          "package_name": "com.mypetprojectbyme.familyshoppinglist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691428675120-ee165pag1mtbo54h16c0ds3h984884v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAHQmECkDvq30Z5fJ3EMvagnLq0o5Llg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691428675120-ee165pag1mtbo54h16c0ds3h984884v6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

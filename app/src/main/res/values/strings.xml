@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">FamilyShoppingList</string>
+
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
+    <string name="welcome_to_shopping_list">WELCOME TO SHOPPING LIST</string>
+    <!-- Strings related to login_bt -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="sign_in_google">Sign in Google</string>
+    <string name="my_web_client_id">691428675120-ee165pag1mtbo54h16c0ds3h984884v6.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_offline">ENTER OFFLINE</string>
+    <string name="fab_content_desc">plus button</string>
+    <string name="enter_name">enter name</string>
+    <string name="enter_description">enter description</string>
+    <string name="save">SAVE</string>
+    <string name="edit_button">edit button</string>
+    <string name="remove_button">remove button</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="create_private_note">CREATE PRIVATE NOTE</string>
+    <string name="user_name">User Name</string>
+    <string name="user_email">User Email</string>
+    <string name="there_is_enter_nothing_text">there is enter nothing</string>
+    <string name="add_list_item">add list item</string>
+    <string name="enter_purchase">enter purchase</string>
+    <string name="create_family_note">CREATE FAMILY NOTE</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="notes">NOTES</string>
+    <string name="edit_note">EDIT NOTE</string>
+    <string name="add_family_members">Add family members</string>
+    <string name="add">add</string>
+    <string name="text_email_of_user">Text email of user</string>
+    <string name="add_user_listener">add user listener</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_alert_dialog">Add</string>
+    <string name="msg_token_fmt" />
+</resources>

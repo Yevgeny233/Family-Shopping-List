@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/create_item"
+        android:icon="@drawable/spot_mask"
+        android:title="@string/create_private_note">
+
+    </item>
+
+    <item
+        android:icon="@drawable/spot_mask"
+        android:id="@+id/create_item_family"
+        android:title="@string/create_family_note"/>
+</menu>
