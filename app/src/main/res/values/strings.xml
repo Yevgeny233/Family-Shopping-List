@@ -30,7 +30,7 @@
     <string name="create_private_note">CREATE PRIVATE NOTE</string>
     <string name="user_name">User Name</string>
     <string name="user_email">User Email</string>
-    <string name="there_is_enter_nothing_text">there is enter nothing</string>
+    <string name="there_is_entered_nothing_text">there is entered nothing</string>
     <string name="add_list_item">add list item</string>
     <string name="enter_purchase">enter purchase</string>
     <string name="create_family_note">CREATE FAMILY NOTE</string>
@@ -44,4 +44,6 @@
     <string name="cancel">Cancel</string>
     <string name="add_alert_dialog">Add</string>
     <string name="msg_token_fmt" />
+    <string name="channel_name">Channel name</string>
+    <string name="channel_description">channel description</string>
 </resources>

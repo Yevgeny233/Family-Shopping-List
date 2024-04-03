@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.mypetprojectbyme.familyshoppinglist.Constants.FAMILY_KEY
 import com.mypetprojectbyme.familyshoppinglist.R
 import com.mypetprojectbyme.familyshoppinglist.Utils
@@ -25,7 +26,8 @@ import com.mypetprojectbyme.familyshoppinglist.databinding.AlertDialogEmailBindi
 import com.mypetprojectbyme.familyshoppinglist.domain.adapters.AlertAdapter
 import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.CurrentUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.cancel
+
 
 @AndroidEntryPoint
 
@@ -40,6 +42,8 @@ class StartActivity : AppCompatActivity() {
         startBinding = ActivityStartBinding.inflate(layoutInflater)
 
         setContentView(startBinding?.root)
+        currentUserViewModel.getCurrentUser()?.email?.let { email -> subscribeToTopic(email) }
+        setAppBar()
         this.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         startBinding?.logOut?.setOnClickListener {
@@ -47,7 +51,53 @@ class StartActivity : AppCompatActivity() {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
+        currentUserViewModel.getCurrentUser().let { userOfAppModel ->
+
+            val navigationView = startBinding?.navView
+            val header = navigationView?.getHeaderView(0)
+            val headerViewTextName = header?.findViewById<TextView>(R.id.user_name_view)
+            val headerViewTextEmail = header?.findViewById<TextView>(R.id.user_email_view)
+            headerViewTextName?.text = userOfAppModel?.name
+            headerViewTextEmail?.text = userOfAppModel?.email
+
+            Utils.printUserLog("StartActivity User name = ${userOfAppModel?.name} : user email = ${userOfAppModel?.email}")
+        }
+
+    }
+
+    private fun showAlertDialog() {
+        val builder = MaterialAlertDialogBuilder(this)
+        val alertDialogEmailBinding = AlertDialogEmailBinding.inflate(layoutInflater)
+        val adapter = AlertAdapter()
+        val recyclerView: RecyclerView = alertDialogEmailBinding.recyclerListUserEmail
+        recyclerView.adapter = adapter
+        val addFamilyMemberButton = alertDialogEmailBinding.actionAddUserEmailButton
+        builder.setView(alertDialogEmailBinding.root)
+
+        addFamilyMemberButton.setOnClickListener {
+            val editTextUserEmail: String = alertDialogEmailBinding.inputEmailField.text.toString()
+            adapter.addUserEmail(editTextUserEmail)
+            Log.i("TAG_showAlertDialog_", "addFamilyMemberButton is clicked")
+        }
+        builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface, _ ->
+            dialogInterface.cancel()
+        }
+        builder.setPositiveButton(getString(R.string.add_alert_dialog)) { dialogInterface, _ ->
+            val familyMembers = adapter.getFamilyMembers()
+            val bundle = bundleOf(FAMILY_KEY to familyMembers.toTypedArray())
+
+            startBinding?.navHostFragment?.findNavController()
+                ?.navigate(R.id.action_noteFragment_to_createNoteFragment, bundle)
+            dialogInterface.dismiss()
+        }
+        builder.show()
+    }
+
+    private fun setAppBar() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -94,54 +144,23 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        lifecycleScope.launch {
-            currentUserViewModel.observeCurrentUser().collect {
+    private fun subscribeToTopic(userEmail: String) {
 
-                val navigationView = startBinding?.navView
-                val header = navigationView?.getHeaderView(0)
-                val headerViewTextName = header?.findViewById<TextView>(R.id.user_name_view)
-                val headerViewTextEmail = header?.findViewById<TextView>(R.id.user_email_view)
-                headerViewTextName?.text = it?.name
-                headerViewTextEmail?.text = it?.email
+        val subEmail = userEmail.filter { it != '@' }
+        val firebaseMessaging = FirebaseMessaging.getInstance()
+        firebaseMessaging.subscribeToTopic(subEmail).addOnSuccessListener {
+            Utils.notificationLog("$subEmail has subscribed Success")
+        }.addOnFailureListener {
+            Utils.notificationLog("$subEmail has subscribed UNSuccess ${it.message}")
 
-                Utils.printUserLog("StartActivity User name = ${it?.name} : user email = ${it?.email}")
-            }
         }
-    }
-
-    private fun showAlertDialog() {
-        val builder = MaterialAlertDialogBuilder(this)
-        val alertDialogEmailBinding = AlertDialogEmailBinding.inflate(layoutInflater)
-        val adapter = AlertAdapter()
-        val recyclerView: RecyclerView = alertDialogEmailBinding.recyclerListUserEmail
-        recyclerView.adapter = adapter
-        val addFamilyMemberButton = alertDialogEmailBinding.actionAddUserEmailButton
-        builder.setView(alertDialogEmailBinding.root)
-
-        addFamilyMemberButton.setOnClickListener {
-            val editTextUserEmail: String = alertDialogEmailBinding.inputEmailField.text.toString()
-            adapter.addUserEmail(editTextUserEmail)
-            Log.i("TAG_showAlertDialog_", "addFamilyMemberButton is clicked")
-        }
-        builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface, i ->
-            dialogInterface.cancel()
-        }
-        builder.setPositiveButton(getString(R.string.add_alert_dialog)) { dialogInterface, i ->
-            val familyMembers = adapter.getFamilyMembers()
-            val bundle = bundleOf(FAMILY_KEY to familyMembers.toTypedArray())
-
-            startBinding?.navHostFragment?.findNavController()
-                ?.navigate(R.id.action_noteFragment_to_createNoteFragment, bundle)
-            dialogInterface.dismiss()
-        }
-        builder.show()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         startBinding = null
+        lifecycleScope.cancel()
     }
+
 }
 

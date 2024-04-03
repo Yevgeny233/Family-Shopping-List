@@ -10,5 +10,5 @@ interface FirestoreNoteUseCase {
     fun removeNote(noteModel: NoteModel, id: String)
     fun updateNote(noteModel: NoteModel, id: String)
     fun changeNoteStatus(id: String, newState: Boolean)
-    fun getNoteListBySnapShot(userEmail: String?): Flow<QuerySnapshot>?
+    fun getNoteListSnapShot(userEmail: String?): Flow<QuerySnapshot>?
 }

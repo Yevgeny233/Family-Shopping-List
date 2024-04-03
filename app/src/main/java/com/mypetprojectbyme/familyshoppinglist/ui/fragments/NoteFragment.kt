@@ -20,6 +20,7 @@ import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.CurrentUserViewMode
 import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
@@ -49,25 +50,24 @@ class NoteFragment : Fragment() {
         noteBinding?.floatingActionAddButton?.setOnClickListener {
             navController.navigate(R.id.action_noteFragment_to_createNoteFragment)
         }
-    }
+        currentUserViewModel.getCurrentUser().let { userOfAppModel ->
+            userEmail = userOfAppModel?.email
+            userEmail?.let { email -> Utils.printUserLog(email) }
+        }
+        lifecycleScope.launch(Dispatchers.Main) {
+            noteViewModel.fetchNoteListSnapshot(userEmail)?.collect { snapshot ->
+                val arrayListResult = ArrayList<FetchNoteModel>()
+                for (s in snapshot) {
+                    arrayListResult.add(FetchNoteModel(s.toObject(NoteModel::class.java), s.id))
+                    Utils.fireStoreLog("fetchNoteListSnapshot = " + s.id)
+                }
+                recyclerFetchNoteAdapter?.updateList(arrayListResult)
+            }
+        }
 
-    override fun onStart() {
-        super.onStart()
         recyclerFetchNoteAdapter = RecyclerFetchNoteAdapter()
         noteBinding?.noteRecView?.adapter = recyclerFetchNoteAdapter
 
-        lifecycleScope.launch(Dispatchers.Main) {
-            currentUserViewModel.observeCurrentUser().collect { userOfAppModel ->
-                noteViewModel.fetchNoteListBySnapshot(userOfAppModel?.email)?.collect { snapshot ->
-                    val arrayListResult = ArrayList<FetchNoteModel>()
-                    for (s in snapshot) {
-                        arrayListResult.add(FetchNoteModel(s.toObject(NoteModel::class.java), s.id))
-                    }
-                    recyclerFetchNoteAdapter?.updateList(arrayListResult)
-
-                }
-            }
-        }
         recyclerFetchNoteAdapter?.clickItemListener = { fetchNoteModel ->
             noteViewModel.updateClickedNoteModel(fetchNoteModel)
             findNavController().navigate(
@@ -90,5 +90,6 @@ class NoteFragment : Fragment() {
         recyclerFetchNoteAdapter = null
         userEmail = null
         Log.i("TAG_LIFESICLE_NoteFragment_", "onDestroy")
+        lifecycleScope.cancel()
     }
 }

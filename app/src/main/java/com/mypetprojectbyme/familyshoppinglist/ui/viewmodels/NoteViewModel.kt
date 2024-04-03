@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mypetprojectbyme.familyshoppinglist.domain.model.FetchNoteModel
 import com.mypetprojectbyme.familyshoppinglist.domain.model.NoteModel
-import com.mypetprojectbyme.familyshoppinglist.domain.repositorys.RepositoryFirestore
+import com.mypetprojectbyme.familyshoppinglist.domain.repositoryes.RepositoryFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import javax.inject.Inject
@@ -40,8 +40,8 @@ class NoteViewModel @Inject constructor(private val repositoryFirestore: Reposit
         repositoryFirestore.changeNoteStatus(id, newState)
     }
 
-    fun fetchNoteListBySnapshot(userEmail: String?) =
-        repositoryFirestore.getNoteListBySnapShot(userEmail)
+    fun fetchNoteListSnapshot(userEmail: String?) =
+        repositoryFirestore.getNoteListSnapShot(userEmail)
 
 
     override fun onCleared() {

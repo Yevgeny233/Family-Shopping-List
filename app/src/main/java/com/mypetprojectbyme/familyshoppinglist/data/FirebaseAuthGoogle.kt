@@ -85,7 +85,7 @@ class FirebaseAuthGoogle @Inject constructor(
             val emailVerified = it.isEmailVerified
 
             val uid = it.uid
-            UserOfAppModel(name, email, photoUrl, uid)
+            UserOfAppModel(name, email, uid)
         }
     }
 }

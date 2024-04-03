@@ -1,4 +1,4 @@
-package com.mypetprojectbyme.familyshoppinglist.domain.repositorys
+package com.mypetprojectbyme.familyshoppinglist.domain.repositoryes
 
 import com.mypetprojectbyme.familyshoppinglist.data.NoteFirestoreDataSource
 import com.mypetprojectbyme.familyshoppinglist.domain.model.NoteModel
@@ -27,7 +27,7 @@ class RepositoryFirestore @Inject constructor(
         noteFirestoreDataSource.changeNoteStatus(id, newState)
     }
 
-    override fun getNoteListBySnapShot(userEmail: String?) =
-        noteFirestoreDataSource.getNotesFlowBySnapShot(userEmail)
+    override fun getNoteListSnapShot(userEmail: String?) =
+        noteFirestoreDataSource.getNotesFlowSnapShot(userEmail)
 
 }

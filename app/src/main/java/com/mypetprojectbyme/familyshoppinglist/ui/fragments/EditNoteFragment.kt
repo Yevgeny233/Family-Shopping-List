@@ -49,7 +49,6 @@ class EditNoteFragment : Fragment() {
         }
 
         editNoteBinding?.editButton?.setOnClickListener {
-
             currentFetchNote?.let { fetchNoteModel ->
                 noteViewModel.updateNote(fetchNoteModel.noteModel, fetchNoteModel.idOfNote)
                 moveToBack()
@@ -71,7 +70,11 @@ class EditNoteFragment : Fragment() {
         super.onStart()
         noteViewModel.clickedNoteLiveData.observe(this) { clickedNote ->
             editNoteBinding?.nameEdit?.setText(clickedNote.noteModel.nameNote)
-            clickedNote.noteModel.arrayPurchase?.let { recyclerListPurchaseAdapter?.updatePurchaseList(it) }
+            clickedNote.noteModel.arrayPurchase?.let {
+                recyclerListPurchaseAdapter?.updatePurchaseList(
+                    it
+                )
+            }
             currentFetchNote = clickedNote
         }
     }
@@ -83,7 +86,7 @@ class EditNoteFragment : Fragment() {
     private fun checkInputLayoutState(textLength: Int, inputLayout: TextInputLayout?) {
         if (textLength == 0) {
             inputLayout?.isHelperTextEnabled = true
-            inputLayout?.helperText = getText(R.string.there_is_enter_nothing_text)
+            inputLayout?.helperText = getText(R.string.there_is_entered_nothing_text)
         } else {
             inputLayout?.isHelperTextEnabled = false
         }
@@ -99,3 +102,4 @@ class EditNoteFragment : Fragment() {
         editNoteBinding = null
     }
 }
+

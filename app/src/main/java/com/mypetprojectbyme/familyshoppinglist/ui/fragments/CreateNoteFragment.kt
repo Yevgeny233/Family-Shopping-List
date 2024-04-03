@@ -21,7 +21,10 @@ import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.CurrentUserViewMode
 import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 @AndroidEntryPoint
 
@@ -33,6 +36,7 @@ class CreateNoteFragment : Fragment() {
     private var inputNameLength = 0
     private val currentUserViewModel by activityViewModels<CurrentUserViewModel>()
     private var userEmailArray: ArrayList<String> = ArrayList()
+    private var arrayListSubscribers: ArrayList<String> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,6 +60,7 @@ class CreateNoteFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.Main) {
             currentUserViewModel.observeCurrentUser().collect { userOfAppModel ->
                 userOfAppModel?.email?.let { email -> userEmailArray.add(email) }
+                userOfAppModel?.email?.filter { it != '@' }?.let { arrayListSubscribers.add(it) }
             }
         }
         return createNoteBinding?.root
@@ -68,6 +73,7 @@ class CreateNoteFragment : Fragment() {
             val array = arguments?.getStringArray(Constants.FAMILY_KEY)
             array?.forEach { user ->
                 userEmailArray.add(user)
+                arrayListSubscribers.add(user.filter { it != '@' })
                 Utils.createNoteLog("family members = $user")
             }
         }
@@ -77,7 +83,7 @@ class CreateNoteFragment : Fragment() {
             val isChecked = false
 
             val noteModel =
-                NoteModel(name, purchaseArrayList, isChecked, userEmailArray)
+                NoteModel(name, purchaseArrayList, isChecked, userEmailArray, arrayListSubscribers)
             noteViewModel.saveNote(noteModel)
             findNavController().popBackStack()
         }
@@ -90,7 +96,7 @@ class CreateNoteFragment : Fragment() {
     private fun checkInputLayoutState(textLength: Int, inputLayout: TextInputLayout?) {
         if (textLength == 0) {
             inputLayout?.isHelperTextEnabled = true
-            inputLayout?.helperText = getText(R.string.there_is_enter_nothing_text)
+            inputLayout?.helperText = getText(R.string.there_is_entered_nothing_text)
         } else {
             inputLayout?.isHelperTextEnabled = false
         }
@@ -100,6 +106,8 @@ class CreateNoteFragment : Fragment() {
         super.onDestroy()
         createNoteBinding = null
         purchaseAdapter = null
+        lifecycleScope.cancel()
     }
 
 }
+

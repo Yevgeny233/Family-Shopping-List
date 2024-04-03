@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object  FireBaseAnalyticModule {
+object FireBaseAnalyticModule {
 
     @Provides
     @Singleton
-     fun provideFireBaseAnalytic(): FireBaseAnalytic{
+    fun provideFireBaseAnalytic(): FireBaseAnalytic {
         return FireBaseAnalytic()
     }
 }

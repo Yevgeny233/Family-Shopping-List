@@ -75,7 +75,7 @@ class FirebaseAuthPassword @Inject constructor(private val context: Context) {
             val emailVerified = it.isEmailVerified
 
             val uid = it.uid
-            UserOfAppModel(name, email, photoUrl, uid)
+            UserOfAppModel(name, email, uid)
         }
     }
 

@@ -11,12 +11,13 @@ import com.mypetprojectbyme.familyshoppinglist.Utils
 import com.mypetprojectbyme.familyshoppinglist.data.FireBaseAnalytic
 import com.mypetprojectbyme.familyshoppinglist.data.FirebaseAuthGoogle
 import com.mypetprojectbyme.familyshoppinglist.data.FirebaseAuthPassword
-import com.mypetprojectbyme.familyshoppinglist.domain.network.InternetConnectionStatus
 import com.mypetprojectbyme.familyshoppinglist.databinding.ActivityAuthBinding
+import com.mypetprojectbyme.familyshoppinglist.domain.network.InternetConnectionStatus
 import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.CurrentUserViewModel
 import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.NetworkConnectionViewModelState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -133,6 +134,7 @@ class AuthActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         authBinding = null
+        lifecycleScope.cancel()
     }
 
     private fun lockViews() {

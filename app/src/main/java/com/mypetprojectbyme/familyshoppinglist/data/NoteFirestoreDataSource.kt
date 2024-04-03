@@ -27,13 +27,11 @@ class NoteFirestoreDataSource @Inject constructor() {
         }
     }
 
-    fun getNotesFlowBySnapShot(userEmail: String?): Flow<QuerySnapshot>? {
-
-        val ref = userEmail?.let { email ->
+    fun getNotesFlowSnapShot(userEmail: String?): Flow<QuerySnapshot>? {
+        return  userEmail?.let { email ->
             db.collection("notes")
                 .whereArrayContains("arrayUserEmail", email)
-        }
-        return ref?.snapshots()?.flowOn(Dispatchers.IO)
+        }?.snapshots()?.flowOn(Dispatchers.IO)
     }
 
     fun getSnapShotChanges(userEmail: String?): Query? {
@@ -43,6 +41,7 @@ class NoteFirestoreDataSource @Inject constructor() {
         }
         return ref
     }
+
     fun removeNote(noteModel: NoteModel, id: String) {
         db.collection("notes").document(id).delete().addOnSuccessListener {
             Utils.fireStoreLog("DocumentSnapshot by id => $noteModel successfully deleted!")
@@ -71,4 +70,3 @@ class NoteFirestoreDataSource @Inject constructor() {
         }
     }
 }
-

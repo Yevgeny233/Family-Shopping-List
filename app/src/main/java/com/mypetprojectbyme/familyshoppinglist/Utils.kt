@@ -35,8 +35,11 @@ class Utils {
         }
 
         fun serviceLog(message: String) {
-            Log.i(TAG_SERVICE,message)
+            Log.i(TAG_SERVICE, message)
         }
 
+        fun notificationLog(msg: String) {
+            Log.i(Constants.TAG_NOTIFY, msg)
+        }
     }
 }

@@ -39,7 +39,7 @@ class CurrentUserViewModel : ViewModel() {
             val uid = it.uid
             Log.i("TAG_USER_ID_", uid)
 
-            UserOfAppModel(name, email, photoUrl, uid)
+            UserOfAppModel(name, email, uid)
         }
 
     }

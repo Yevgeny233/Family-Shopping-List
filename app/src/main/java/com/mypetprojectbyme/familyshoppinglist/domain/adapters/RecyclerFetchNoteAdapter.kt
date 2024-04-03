@@ -1,13 +1,12 @@
 package com.mypetprojectbyme.familyshoppinglist.domain.adapters
 
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
-import com.mypetprojectbyme.familyshoppinglist.R
 import com.mypetprojectbyme.familyshoppinglist.databinding.NoteItemBinding
 import com.mypetprojectbyme.familyshoppinglist.domain.model.FetchNoteModel
+import com.mypetprojectbyme.familyshoppinglist.ui.rendercontroller.RenderController
 
 class RecyclerFetchNoteAdapter :
     RecyclerView.Adapter<RecyclerFetchNoteAdapter.NoteViewHolder>() {
@@ -24,14 +23,17 @@ class RecyclerFetchNoteAdapter :
             binding.checkboxNote.isChecked = fetchNoteModel.noteModel.checked
 
             if (fetchNoteModel.noteModel.checked) {
-                binding.nameOfNote.paintFlags =
-                    binding.checkboxNote.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                binding.nameOfNote.setTextColor(binding.root.resources.getColor(R.color.grey))
+                RenderController.setClickedState(
+                    binding.nameOfNote,
+                    binding.checkboxNote,
+                    binding.root.resources
+                )
             } else {
-                binding.nameOfNote.paintFlags =
-                    binding.nameOfNote.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                binding.nameOfNote.setTextColor(binding.root.resources.getColor(R.color.black))
-
+                RenderController.setUnClickedState(
+                    binding.nameOfNote,
+                    binding.checkboxNote,
+                    binding.root.resources
+                )
             }
         }
 

@@ -11,6 +11,7 @@ import com.mypetprojectbyme.familyshoppinglist.ui.viewmodels.CurrentUserViewMode
 import com.romainpiel.shimmer.Shimmer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -36,9 +37,6 @@ class WelcomeActivity : AppCompatActivity() {
                     welcomeBinding = ActivityWelcomeBinding.inflate(layoutInflater)
                     setContentView(welcomeBinding?.root)
 
-                    shimmer = Shimmer()
-                    shimmer?.start(welcomeBinding?.textWelcome)
-
                     welcomeBinding?.buttonNext?.setOnClickListener {
                         authenticationIntent =
                             Intent(this@WelcomeActivity, AuthActivity::class.java)
@@ -57,7 +55,7 @@ class WelcomeActivity : AppCompatActivity() {
         authenticationIntent = null
         startIntent = null
         Utils.printAuthLog("done onDestroy by WelcomeActivity")
-
+        lifecycleScope.cancel()
     }
 }
 
